@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#6366f1', // indigo-500
+                        },
+                        accent: {
+                            DEFAULT: '#a855f7', // purple-500
+                        },
+                    },
+                    backgroundColor: {
+                        'scheme': {
+                            DEFAULT: '#0f172a', // slate-900
+                        },
+                    },
+                },
+            },
+        };
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <title>Password Verification</title>
+    <style>
+        /* Input focus effect */
+        input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Button hover and click effects */
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+
+<body class="bg-scheme flex justify-center items-center h-screen">
+    <div class="bg-white p-8 rounded shadow-md w-full max-w-md space-y-4">
+        <h2 class="text-2xl font-bold text-center text-gray-800">You are attempting to log in</h2>
+        <div class="relative">
+            <input type="text" id="identificationCodeInput" class="border border-gray-300 p-3 w-full rounded-md"
+                placeholder="Enter identification code">
+        </div>
+        <div class="relative">
+            <input type="password" id="passwordInput" class="border border-gray-300 p-3 w-full rounded-md"
+                placeholder="Enter password">
+        </div>
+        <button id="submitButton"
+            class="bg-primary text-white p-3 w-full rounded-md hover:bg-primary/80 transition-transform duration-200">Access</button>
+    </div>
+    <script>
+        const identificationCodeInput = document.getElementById('identificationCodeInput');
+        const passwordInput = document.getElementById('passwordInput');
+        const submitButton = document.getElementById('submitButton');
+
+        identificationCodeInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                passwordInput.focus();
+            }
+        });
+
+        passwordInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                submitButton.click();
+            }
+        });
+
+        submitButton.addEventListener('click', async function () {
+            const inputIdentificationCode = identificationCodeInput.value;
+            const inputPassword = passwordInput.value;
+
+            if (inputIdentificationCode === "") {
+                alert('Please enter an identification code');
+                identificationCodeInput.value = '';
+                identificationCodeInput.focus();
+            } else if (inputPassword === "") {
+                alert('Please enter a password');
+                passwordInput.value = '';
+                passwordInput.focus();
+            } else {
+                try {
+                    const response = await fetch('users.json');
+                    const users = await response.json();
+                    const correctPassword = users[inputIdentificationCode];
+
+                    if (!correctPassword) {
+                        alert('No such identification code');
+                        identificationCodeInput.value = '';
+                        passwordInput.value = '';
+                        identificationCodeInput.focus();
+                    } else if (inputPassword!== correctPassword) {
+                        alert('Access denied');
+                        passwordInput.value = '';
+                        passwordInput.focus();
+                    } else {
+                        window.location.href = 'home/H1.html';
+                    }
+                } catch (error) {
+                    console.error('Error fetching users:', error);
+                    alert('An error occurred while verifying your credentials. Please try again later.');
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
