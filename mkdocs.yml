@@ -14,6 +14,11 @@ features:
   - navigation.tabs  
   - toc.follow       
 
+extra:
+  generator: false  # 隐藏底部的生成器信息
+
+copyright: "Copyright © 2025" 
+
 nav:
   - '': index.md  # 关键：空字符串表示首页，不在导航栏显示
   - 第0章-梦呓: 
