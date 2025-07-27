@@ -1,0 +1,20 @@
+site_name: BABEL
+
+theme:
+  name: material
+  palette:
+       # 深色模式配色
+    - scheme: slate
+      primary: deep-purple
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: 切换到浅色模式
+features:
+  - navigation.tabs  
+  - toc.follow       
+
+nav:
+  - '': index.md  # 关键：空字符串表示首页，不在导航栏显示
+  - 第0章-梦呓: 
+    - 第一章: 第0章-梦呓/1-梦魇.md
